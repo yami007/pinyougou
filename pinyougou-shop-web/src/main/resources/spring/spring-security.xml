@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    <!--配置应用名 服务消费方-->
+    <dubbo:application name="pinyougou-shop-web"></dubbo:application>
+    <!--配置注册中心-->
+    <dubbo:registry protocol="zookeeper" address="192.168.25.128" port="2181"></dubbo:registry>
+    <!--引用服务 通过注解 @reference 扫描 即可引用 包含了组件扫描-->
+    <dubbo:reference id="sellerService" interface="com.pinyougou.sellergoods.service.SellerService"></dubbo:reference>
+
+    <beans:bean id="userDetailsService" class="com.pinyougou.shop.service.UserDetailsServiceImpl">
+        <beans:property name="sellerService" ref="sellerService"></beans:property>
+    </beans:bean>
+        <!-- 以下页面不被拦截 -->
+        <http pattern="/*.html" security="none"></http>
+        <http pattern="/seller/add.do" security="none"></http>
+        <http pattern="/css/**" security="none"></http>
+        <http pattern="/img/**" security="none"></http>
+        <http pattern="/js/**" security="none"></http>
+        <http pattern="/plugins/**" security="none"></http>
+
+        <!-- 页面拦截规则 -->
+        <http use-expressions="false">
+        <intercept-url pattern="/**" access="ROLE_SELLER"/>
+        <form-login
+                login-page="/shoplogin.html"
+                default-target-url="/admin/index.html"
+                authentication-failure-url="/shoplogin.html"
+                always-use-default-target="true"/>
+        <csrf disabled="true"/>
+        <headers>
+            <!--设置策略为：同源框架可以共享安全策略-->
+            <frame-options policy="SAMEORIGIN"/>
+        </headers>
+            <!--退出登录-->
+            <logout logout-success-url="/shoplogin.html"></logout>
+        </http>
+        <beans:bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></beans:bean>
+        <!-- 认证管理器 -->
+        <authentication-manager>
+        <authentication-provider user-service-ref="userDetailsService">
+            <password-encoder ref="bCryptPasswordEncoder"></password-encoder>
+        </authentication-provider>
+        </authentication-manager>
+</beans:beans>
+

@@ -1,0 +1,4 @@
+0:0:0:0:0:0:0:1 - - [07/Dec/2018:00:03:42 +0800] "GET /search.html HTTP/1.1" 304 - http-bio-9104-exec-1 129
+0:0:0:0:0:0:0:1 - - [07/Dec/2018:00:03:43 +0800] "GET /%7B%7Bitem.image%7D%7D HTTP/1.1" 404 995 http-bio-9104-exec-3 16
+0:0:0:0:0:0:0:1 - - [07/Dec/2018:00:03:43 +0800] "GET /js/plugins/jquery/jquery.min.map HTTP/1.1" 404 1015 http-bio-9104-exec-4 2
+0:0:0:0:0:0:0:1 - - [07/Dec/2018:00:03:51 +0800] "POST /itemSearch/search.do HTTP/1.1" 200 23683 http-bio-9104-exec-5 6225
