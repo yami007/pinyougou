@@ -7,9 +7,7 @@
     <groupId>com.pinyougou</groupId>
     <artifactId>pinyougou-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>pinyougou-page-web</module>
-    </modules>
+
     <packaging>pom</packaging>
     <properties>
         <!--设置编译的版本使用1.8版本-->
